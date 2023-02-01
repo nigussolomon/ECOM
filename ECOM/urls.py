@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from ecom_base import urls as ecom_base_urls
+from ecom_store import urls as ecom_store_urls
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api-auth", include('rest_framework.urls')),
-    path("base-api/", include(ecom_base_urls))
+    path("base-api/", include(ecom_base_urls)),
+    path("store-api/", include(ecom_store_urls)),
 ]
