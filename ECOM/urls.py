@@ -20,5 +20,5 @@ from ecom_base import urls as ecom_base_urls
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api-auth", include('rest_framework.urls')),
-    path("api/", include(ecom_base_urls))
+    path("base-api/", include(ecom_base_urls))
 ]
