@@ -1,12 +1,13 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 from .models import EcomProfile, Notification
 from .serializers import EcomProfileSerializer, NotificationSerializer
 import datetime
 
 
 class EcomProfileView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
     def get(self, request, *args, **kwargs):
         try:
             profile = EcomProfile.objects.get(user=request.user.id)
@@ -21,6 +22,7 @@ class EcomProfileView(APIView):
 
 
 class NotificationHistoryView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
     def get(self, request, *args, **kwargs):
         notification = Notification.objects.filter(
             user=request.user.id, delivery_date__lte=datetime.date.today())
@@ -36,6 +38,7 @@ class NotificationHistoryView(APIView):
 
 
 class UnreadNotificationsView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
     def get(self, request, *args, **kwargs):
         notification = Notification.objects.filter(
             user=request.user.id, delivery_date__lte=datetime.date.today(), notification_status='unread')
