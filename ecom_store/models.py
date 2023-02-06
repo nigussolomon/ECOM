@@ -12,7 +12,7 @@ class Store(models.Model):
 class StoreSection(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE, null=False, blank=False)
     section_name = models.CharField(null=False, blank=False, max_length=50)
-    section_number = models.IntegerField(null=False, blank=False, unique=True)
+    section_number = models.IntegerField(null=False, blank=False)
 
     def __str__(self) -> str:
         return self.store.store_name + "-" + self.section_name + "#" + str(self.section_number)

@@ -2,10 +2,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from .models import Store, StoreSection
+from rest_framework.authentication import TokenAuthentication
 from .serializers import StoreSerializer, StoreSectionSerializer
 
 
 class StoreView(APIView):
+    authentication_classes = [TokenAuthentication,]
+    permission_classes = [permissions.IsAuthenticated]
     def get(self, request, *args, **kwargs):
         try:
             store = Store.objects.get(store_owner=request.user.id)
@@ -19,6 +22,8 @@ class StoreView(APIView):
             )
 
 class StoreSectionView(APIView):
+    authentication_classes = [TokenAuthentication,]
+    permission_classes = [permissions.IsAuthenticated]
     def get(self, request, *args, **kwargs):
         try:
             store = Store.objects.get(store_owner=request.user.id)

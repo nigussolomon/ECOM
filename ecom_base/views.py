@@ -2,15 +2,34 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from .models import EcomProfile, Notification
-from .serializers import EcomProfileSerializer, NotificationSerializer
+from .serializers import EcomProfileSerializer, NotificationSerializer, RegisterSerializer, UserSerializer
+from rest_framework.authentication import TokenAuthentication
+from rest_framework import generics
+from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
 import datetime
+
+class RegisterUserAPIView(generics.CreateAPIView):
+  permission_classes = [permissions.AllowAny]
+  serializer_class = RegisterSerializer
+
+class Logout(APIView):
+    authentication_classes = [TokenAuthentication,]
+    permission_classes = [permissions.AllowAny]
+    def get(self, request):
+        user_token = Token.objects.get(key=request.META['HTTP_AUTHORIZATION']).user
+        user_token.auth_token.delete()
+        return Response({"success": True, "message": "You have been logged out"},status=status.HTTP_200_OK)
 
 
 class EcomProfileView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [TokenAuthentication,]
+    permission_classes = [permissions.AllowAny]
     def get(self, request, *args, **kwargs):
+        user_token = Token.objects.get(key=request.META['HTTP_AUTHORIZATION']).user.id
         try:
-            profile = EcomProfile.objects.get(user=request.user.id)
+            user = User.objects.get(id = user_token)
+            profile = EcomProfile.objects.get(user=user.id)
             serializer = EcomProfileSerializer(profile)
             return Response(
                 {"success": True, "data": serializer.data}, status=status.HTTP_200_OK
@@ -22,6 +41,7 @@ class EcomProfileView(APIView):
 
 
 class NotificationHistoryView(APIView):
+    authentication_classes = [TokenAuthentication,]
     permission_classes = [permissions.IsAuthenticated]
     def get(self, request, *args, **kwargs):
         notification = Notification.objects.filter(
@@ -38,6 +58,7 @@ class NotificationHistoryView(APIView):
 
 
 class UnreadNotificationsView(APIView):
+    authentication_classes = [TokenAuthentication,]
     permission_classes = [permissions.IsAuthenticated]
     def get(self, request, *args, **kwargs):
         notification = Notification.objects.filter(
