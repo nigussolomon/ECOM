@@ -1,9 +1,9 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
-from .models import Store, StoreSection
+from .models import Store, StoreSection, ProductCategory
 from rest_framework.authentication import TokenAuthentication
-from .serializers import StoreSerializer, StoreSectionSerializer
+from .serializers import StoreSerializer, StoreSectionSerializer, ProductCategorySerializer
 
 
 class StoreView(APIView):
@@ -41,3 +41,14 @@ class StoreSectionView(APIView):
             return Response(
                 {"success": True, "message": "There is no store linked to you user account!"}, status=status.HTTP_200_OK
             )
+
+class ProductCategoryView(APIView):
+    authentication_classes = [TokenAuthentication,]
+    permission_classes = [permissions.AllowAny]
+    
+    def get(self, request, *args, **kwargs):
+        categories = ProductCategory.objects.all()
+        serializer = ProductCategorySerializer(categories, many=True)
+        return Response(
+            {"success": True, "data": serializer.data}, status=status.HTTP_200_OK
+        )

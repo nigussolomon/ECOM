@@ -16,3 +16,18 @@ class StoreSection(models.Model):
 
     def __str__(self) -> str:
         return self.store.store_name + "-" + self.section_name + "#" + str(self.section_number)
+
+class ProductCategory(models.Model):
+    category_name = models.CharField(null=False, blank=False, max_length=30)
+
+    def __str__(self) -> str:
+        return self.category_name
+class StoreProduct(models.Model):
+    store_section = models.ForeignKey(StoreSection, on_delete=models.CASCADE, null=False, blank=False)
+    product_code = models.CharField(null=False, blank=False, max_length=50)
+    product_name = models.CharField(null=False, blank=False, max_length=120)
+    product_category = models.ForeignKey(ProductCategory, null=False, blank=False, on_delete=models.CASCADE)
+    product_price = models.CharField(null=False, blank=False, max_length=20)
+
+    def __str__(self) -> str:
+        return self.product_code + " - " + self.product_name
