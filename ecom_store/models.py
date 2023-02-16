@@ -10,20 +10,19 @@ class Store(models.Model):
         return self.store_code + " - " + self.store_name
 
 class StoreSection(models.Model):
-    store = models.ForeignKey(Store, on_delete=models.CASCADE, null=False, blank=False)
     section_name = models.CharField(null=False, blank=False, max_length=50)
-    section_number = models.IntegerField(null=False, blank=False)
+    section_code = models.IntegerField(null=False, blank=False, unique=True)
 
     def __str__(self) -> str:
         return self.store.store_name + "-" + self.section_name + "#" + str(self.section_number)
 
 class ProductCategory(models.Model):
+    store_section = models.ForeignKey(StoreSection, on_delete=models.CASCADE, null=False, blank=False)
     category_name = models.CharField(null=False, blank=False, max_length=30)
 
     def __str__(self) -> str:
         return self.category_name
 class StoreProduct(models.Model):
-    store_section = models.ForeignKey(StoreSection, on_delete=models.CASCADE, null=False, blank=False)
     product_code = models.CharField(null=False, blank=False, max_length=50)
     product_name = models.CharField(null=False, blank=False, max_length=120)
     product_category = models.ForeignKey(ProductCategory, null=False, blank=False, on_delete=models.CASCADE)
