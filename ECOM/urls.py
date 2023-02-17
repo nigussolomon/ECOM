@@ -19,6 +19,8 @@ from ecom_base import urls as ecom_base_urls
 from ecom_store import urls as ecom_store_urls
 from ecom_base.views import RegisterUserAPIView
 from rest_framework.authtoken import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -27,4 +29,5 @@ urlpatterns = [
     path('register/',RegisterUserAPIView.as_view()),
     path("base-api/", include(ecom_base_urls)),
     path("store-api/", include(ecom_store_urls)),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
