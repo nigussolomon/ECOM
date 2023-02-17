@@ -14,7 +14,7 @@ class StoreSection(models.Model):
     section_code = models.IntegerField(null=False, blank=False, unique=True)
 
     def __str__(self) -> str:
-        return self.store.store_name + "-" + self.section_name + "#" + str(self.section_number)
+        return self.section_name + "#" + str(self.section_code)
 
 class ProductCategory(models.Model):
     store_section = models.ForeignKey(StoreSection, on_delete=models.CASCADE, null=False, blank=False)
@@ -26,6 +26,7 @@ class StoreProduct(models.Model):
     product_code = models.CharField(null=False, blank=False, max_length=50)
     product_name = models.CharField(null=False, blank=False, max_length=120)
     product_category = models.ForeignKey(ProductCategory, null=False, blank=False, on_delete=models.CASCADE)
+    product_image = models.ImageField(upload_to='media/')
     product_price = models.CharField(null=False, blank=False, max_length=20)
 
     def __str__(self) -> str:

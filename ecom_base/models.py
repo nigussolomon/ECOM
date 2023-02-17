@@ -22,6 +22,7 @@ class EcomProfile(models.Model):
     city = models.CharField(max_length=50)
     street = models.CharField(max_length=80)
     building_number = models.CharField(max_length=20)
+    profile_picture = models.ImageField(upload_to='profiles/', )
 
     def __str__(self) -> str:
         return self.first_name + " " + self.middle_name + " " + self.last_name + " - " + self.user.username

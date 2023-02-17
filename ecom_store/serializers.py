@@ -18,8 +18,6 @@ class StoreSerializerNamePlusCodeOnly(serializers.ModelSerializer):
 
 
 class StoreSectionSerializer(serializers.ModelSerializer):
-    store = StoreSerializerNamePlusCodeOnly()
-
     class Meta:
         model = StoreSection
         fields = '__all__'
