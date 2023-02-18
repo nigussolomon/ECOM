@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "ecom_base",
-    "ecom_store"
+    "ecom_store",
+    "ecom_sales"
 ]
 
 MIDDLEWARE = [
