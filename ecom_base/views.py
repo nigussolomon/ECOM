@@ -42,7 +42,7 @@ class EcomProfileView(APIView):
 
 class NotificationHistoryView(APIView):
     authentication_classes = [TokenAuthentication,]
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     def get(self, request, *args, **kwargs):
         notification = Notification.objects.filter(
             user=request.user.id, delivery_date__lte=datetime.date.today())
@@ -59,7 +59,7 @@ class NotificationHistoryView(APIView):
 
 class UnreadNotificationsView(APIView):
     authentication_classes = [TokenAuthentication,]
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     def get(self, request, *args, **kwargs):
         notification = Notification.objects.filter(
             user=request.user.id, delivery_date__lte=datetime.date.today(), notification_status='unread')

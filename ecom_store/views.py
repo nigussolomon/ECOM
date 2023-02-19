@@ -4,14 +4,16 @@ from rest_framework import status, permissions
 from .models import Store, StoreSection, ProductCategory
 from rest_framework.authentication import TokenAuthentication
 from .serializers import StoreSerializer, StoreSectionSerializer, ProductCategorySerializer
+from rest_framework.authtoken.models import Token
 
 
 class StoreView(APIView):
     authentication_classes = [TokenAuthentication,]
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     def get(self, request, *args, **kwargs):
+        user_token = Token.objects.get(key=request.META['HTTP_AUTHORIZATION']).user.id
         try:
-            store = Store.objects.get(store_owner=request.user.id)
+            store = Store.objects.get(store_owner=user_token)
             serializer = StoreSerializer(store)
             return Response(
                 {"success": True, "data": serializer.data}, status=status.HTTP_200_OK
@@ -23,7 +25,7 @@ class StoreView(APIView):
 
 class StoreSectionView(APIView):
     authentication_classes = [TokenAuthentication,]
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     def get(self, request, *args, **kwargs):
         try:
             store = Store.objects.get(store_owner=request.user.id)

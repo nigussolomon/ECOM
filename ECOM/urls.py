@@ -30,6 +30,6 @@ urlpatterns = [
     path('register/',RegisterUserAPIView.as_view()),
     path("base-api/", include(ecom_base_urls)),
     path("store-api/", include(ecom_store_urls)),
-    path("sales-api/", include(ecom_sales_urls))
+    path("sales-api/", include(ecom_sales_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
